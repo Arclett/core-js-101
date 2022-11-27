@@ -448,7 +448,7 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  let x = 'fuuuuuuuuuu';
+  let x = 'i hate linter!!!';
   // prettier-ignore
   x = Array.from({ length: n }, (e, i) => Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
   return x;
