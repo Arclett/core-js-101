@@ -51,8 +51,9 @@ function parseDataFromIso8601(value) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
 /**
@@ -70,8 +71,9 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const res = endDate.getTime() - startDate.getTime();
+  return new Date(res).toISOString().slice(11, -1);
 }
 
 /**
@@ -90,8 +92,14 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const h = date.getUTCHours() % 12 === 0 ? 12 : date.getUTCHours() % 12;
+  const m = date.getUTCMinutes();
+  const hdeg = h * 30 + m * 0.5;
+  const mdeg = m * 6;
+  const difDeg = Math.abs(hdeg - mdeg);
+  const res = difDeg > 180 ? 360 - difDeg : difDeg;
+  return res * (Math.PI / 180);
 }
 
 module.exports = {
