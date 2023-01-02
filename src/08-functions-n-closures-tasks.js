@@ -59,8 +59,14 @@ function getPowerFunction(exponent) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...params) {
+  const arg = [...params];
+  return (x) => {
+    if (arg.length === 3) return arg[0] * x * x + arg[1] * x + arg[2];
+    if (arg.length === 2) return arg[0] * x + arg[1];
+    if (arg.length === 1) return arg[0];
+    return null;
+  };
 }
 
 /**
@@ -77,8 +83,15 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  let res;
+  return (...params) => {
+    if (!res) {
+      res = func(params);
+      return res;
+    }
+    return res;
+  };
 }
 
 /**
@@ -96,8 +109,19 @@ function memoize(/* func */) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  let count = attempts;
+  return function res() {
+    try {
+      return func();
+    } catch (error) {
+      if (count > 0) {
+        count -= 1;
+        return res();
+      }
+    }
+    return null;
+  };
 }
 
 /**
@@ -140,8 +164,8 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  return (...arg) => fn(...args1, ...arg);
 }
 
 /**
@@ -161,8 +185,13 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let mem = startFrom;
+  return function () {
+    const res = mem;
+    mem += 1;
+    return res;
+  };
 }
 
 module.exports = {
